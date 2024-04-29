@@ -1,7 +1,6 @@
 package ml
 
 import (
-	"fmt"
 	"math/rand"
 )
 
@@ -11,20 +10,12 @@ func Dot(A, B [][]float64) [][]float64 {
 	P := make([][]float64, len(A))
 
 	for i := range P {
-		P[i] = make([]float64, len(B))
+		P[i] = make([]float64, len(B[0]))
 	}
 
-	fmt.Println(P)
-	fmt.Println(len(A), len(A[0]))
-	fmt.Println(len(B), len(B[0]))
-
-	for i := 0; i < len(A); i++ {
-		for j := 0; j < len(B[0]); j++ {
-			for k := 0; k < len(B); k++ {
-				fmt.Printf("P%v%v ", i, j)
-				fmt.Printf("A%v%v ", i, k)
-				fmt.Printf("W%v%v ", k, j)
-				fmt.Print("\n")
+	for i := range A {
+		for j := range B[0] {
+			for k := range B {
 				P[i][j] += A[i][k] * B[k][j]
 			}
 		}
@@ -100,11 +91,13 @@ func InitializeParametersDeep(layerDims []int64) (map[int][][]float64, map[int][
 // Forward propagation
 func LinearForward(A, W [][]float64, b []float64) [][]float64 {
 
-	Z := Dot(A, W)
+	Z := Dot(W, A)
 
 	for i := range Z {
 		for j := range Z[i] {
-			Z[i][j] += b[j]
+			for k := range b {
+				Z[i][j] += b[k]
+			}
 		}
 	}
 

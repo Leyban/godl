@@ -1,8 +1,16 @@
 package ml
 
 import (
+	"godl/activation"
 	"math/rand"
 )
+
+type ForwardPropCache struct {
+	A [][]float64
+	W [][]float64
+	B []float64
+	Z [][]float64
+}
 
 // Matrix Dot Product
 func Dot(A, B [][]float64) [][]float64 {
@@ -88,10 +96,10 @@ func InitializeParametersDeep(layerDims []int64) (map[int][][]float64, map[int][
 	return weights, biases
 }
 
-// Forward propagation
-func LinearForward(A, W [][]float64, b []float64) [][]float64 {
+// Linear Forward propagation
+func LinearForward(APrev, W [][]float64, b []float64) (Z [][]float64) {
 
-	Z := Dot(W, A)
+	Z = Dot(W, APrev)
 
 	for i := range Z {
 		for j := range Z[i] {
@@ -102,4 +110,22 @@ func LinearForward(A, W [][]float64, b []float64) [][]float64 {
 	}
 
 	return Z
+}
+
+// Forward Propagation with activation
+func LinearActivationForward(
+	APrev, W [][]float64,
+	b []float64,
+	activ activation.ActivationFunction,
+) (A [][]float64) {
+	Z := LinearForward(APrev, W, b)
+
+	switch activ {
+	case activation.ACSigmoid:
+		A = activation.Sigmoid(Z)
+	case activation.ACReLU:
+		A = activation.ReLU(Z)
+	}
+
+	return A
 }

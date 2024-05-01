@@ -103,9 +103,7 @@ func LinearForward(APrev, W [][]float64, b []float64) (Z [][]float64) {
 
 	for i := range Z {
 		for j := range Z[i] {
-			for k := range b {
-				Z[i][j] += b[k]
-			}
+			Z[i][j] += b[i]
 		}
 	}
 
@@ -117,7 +115,7 @@ func LinearActivationForward(
 	APrev, W [][]float64,
 	b []float64,
 	activ activation.ActivationFunction,
-) (A [][]float64) {
+) (A [][]float64, cache ForwardPropCache) {
 	Z := LinearForward(APrev, W, b)
 
 	switch activ {
@@ -127,5 +125,36 @@ func LinearActivationForward(
 		A = activation.ReLU(Z)
 	}
 
-	return A
+	cache = ForwardPropCache{
+		A: APrev,
+		W: W,
+		B: b,
+		Z: Z,
+	}
+
+	return A, cache
+}
+
+// Forward Propagation for all Layers
+// ReLU -> ReLU -> ... Sigmoid
+func LModelForward(
+	X [][]float64,
+	weights map[int][][]float64,
+	biases map[int][]float64,
+) (AL [][]float64, caches []ForwardPropCache) {
+	A := X
+	L := len(weights)
+
+	for l := 1; l < L; l++ {
+		APrev := A
+		cache := ForwardPropCache{}
+
+		A, cache = LinearActivationForward(APrev, weights[l], biases[l], activation.ACReLU)
+		caches = append(caches, cache)
+	}
+
+	AL, cache := LinearActivationForward(A, weights[L], biases[L], activation.ACSigmoid)
+	caches = append(caches, cache)
+
+	return AL, caches
 }

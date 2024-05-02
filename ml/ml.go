@@ -96,21 +96,21 @@ func InitializeParametersDeep(layerDims []int64) (map[int][][]float64, map[int][
 	return weights, biases
 }
 
-// Linear Forward propagation
+// Linear Forward propagation for single layer
 func LinearForward(APrev, W [][]float64, b []float64) (Z [][]float64) {
 
 	Z = Dot(W, APrev)
 
-	for i := range Z {
-		for j := range Z[i] {
-			Z[i][j] += b[i]
+	for n := range Z {
+		for m := range Z[n] {
+			Z[n][m] += b[n]
 		}
 	}
 
 	return Z
 }
 
-// Forward Propagation with activation
+// Forward Propagation with activation for single layer
 func LinearActivationForward(
 	APrev, W [][]float64,
 	b []float64,

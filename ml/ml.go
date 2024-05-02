@@ -73,10 +73,11 @@ func InitializeParameters(n_x, n_h, n_y int64) (map[string][][]float64, map[stri
 
 // Initialize Weights and Biases based on input layerDims
 // layerDims is the array of number of nodes per layer
-func InitializeParametersDeep(layerDims []int64) (map[int][][]float64, map[int][]float64) {
+// weights[n][n-1] biases[n]
+func InitializeParametersDeep(layerDims []int64) (weights map[int][][]float64, biases map[int][]float64) {
 
-	weights := make(map[int][][]float64)
-	biases := make(map[int][]float64)
+	weights = make(map[int][][]float64)
+	biases = make(map[int][]float64)
 
 	for l := 1; l < len(layerDims); l++ {
 		weights[l] = make([][]float64, layerDims[l])
@@ -97,13 +98,17 @@ func InitializeParametersDeep(layerDims []int64) (map[int][][]float64, map[int][
 }
 
 // Linear Forward propagation for single layer
+// APrev[m][n]
+// W[n][n-1]
+// b[n]
+// Z[m][n]
 func LinearForward(APrev, W [][]float64, b []float64) (Z [][]float64) {
 
 	Z = Dot(W, APrev)
 
-	for n := range Z {
-		for m := range Z[n] {
-			Z[n][m] += b[n]
+	for i := range Z {
+		for j := range Z[i] {
+			Z[i][j] += b[i]
 		}
 	}
 
@@ -157,4 +162,11 @@ func LModelForward(
 	caches = append(caches, cache)
 
 	return AL, caches
+}
+
+// Compute the loss for all items m
+func ComputeLoss(AL [][]float64, Y [][]float64) float64 {
+	m := len(AL[0])
+
+	return 0.
 }

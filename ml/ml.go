@@ -1,36 +1,8 @@
 package ml
 
 import (
-	"godl/activation"
 	"math/rand"
 )
-
-type ForwardPropCache struct {
-	A [][]float64
-	W [][]float64
-	B []float64
-	Z [][]float64
-}
-
-// Matrix Dot Product
-func Dot(A, B [][]float64) [][]float64 {
-
-	P := make([][]float64, len(A))
-
-	for i := range P {
-		P[i] = make([]float64, len(B[0]))
-	}
-
-	for i := range A {
-		for j := range B[0] {
-			for k := range B {
-				P[i][j] += A[i][k] * B[k][j]
-			}
-		}
-	}
-
-	return P
-}
 
 // params sizes -- input, hidden, output
 // output weights, biases
@@ -95,78 +67,4 @@ func InitializeParametersDeep(layerDims []int64) (weights map[int][][]float64, b
 	}
 
 	return weights, biases
-}
-
-// Linear Forward propagation for single layer
-// APrev[m][n]
-// W[n][n-1]
-// b[n]
-// Z[m][n]
-func LinearForward(APrev, W [][]float64, b []float64) (Z [][]float64) {
-
-	Z = Dot(W, APrev)
-
-	for i := range Z {
-		for j := range Z[i] {
-			Z[i][j] += b[i]
-		}
-	}
-
-	return Z
-}
-
-// Forward Propagation with activation for single layer
-func LinearActivationForward(
-	APrev, W [][]float64,
-	b []float64,
-	activ activation.ActivationFunction,
-) (A [][]float64, cache ForwardPropCache) {
-	Z := LinearForward(APrev, W, b)
-
-	switch activ {
-	case activation.ACSigmoid:
-		A = activation.Sigmoid(Z)
-	case activation.ACReLU:
-		A = activation.ReLU(Z)
-	}
-
-	cache = ForwardPropCache{
-		A: APrev,
-		W: W,
-		B: b,
-		Z: Z,
-	}
-
-	return A, cache
-}
-
-// Forward Propagation for all Layers
-// ReLU -> ReLU -> ... Sigmoid
-func LModelForward(
-	X [][]float64,
-	weights map[int][][]float64,
-	biases map[int][]float64,
-) (AL [][]float64, caches []ForwardPropCache) {
-	A := X
-	L := len(weights)
-
-	for l := 1; l < L; l++ {
-		APrev := A
-		cache := ForwardPropCache{}
-
-		A, cache = LinearActivationForward(APrev, weights[l], biases[l], activation.ACReLU)
-		caches = append(caches, cache)
-	}
-
-	AL, cache := LinearActivationForward(A, weights[L], biases[L], activation.ACSigmoid)
-	caches = append(caches, cache)
-
-	return AL, caches
-}
-
-// Compute the loss for all items m
-func ComputeLoss(AL [][]float64, Y [][]float64) float64 {
-	m := len(AL[0])
-
-	return 0.
 }

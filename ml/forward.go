@@ -6,10 +6,10 @@ import (
 )
 
 type ForwardPropCache struct {
-	A [][]float64
-	W [][]float64
-	B []float64
-	Z [][]float64
+	APrev [][]float64
+	W     [][]float64
+	B     []float64
+	Z     [][]float64
 }
 
 // Linear Forward propagation for single layer
@@ -46,10 +46,10 @@ func LinearActivationForward(
 	}
 
 	cache = ForwardPropCache{
-		A: APrev,
-		W: W,
-		B: b,
-		Z: Z,
+		APrev: APrev,
+		W:     W,
+		B:     b,
+		Z:     Z,
 	}
 
 	return A, cache

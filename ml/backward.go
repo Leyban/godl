@@ -1,6 +1,9 @@
 package ml
 
-import "godl/model"
+import (
+	"godl/activation"
+	"godl/model"
+)
 
 /*
 LinearBackward implements the linear portion of backward propagation for a single layer (layer l).
@@ -41,4 +44,23 @@ func LinearBackward(dZ [][]float64, cache model.ForwardPropCache) (dAprev, dW []
 	dAprev = Dot(Transpose(W), dZ)
 
 	return dAprev, dW, db
+}
+
+func LinearActivationBackward(dA [][]float64, cache model.ForwardPropCache, activ activation.ActivationFunction) (dAPrev, dW [][]float64, db []float64) {
+	var dZ [][]float64
+
+	// dZ := make([][]float64, len(dA))
+	// for i := range dA {
+	// 	dZ[i] = make([]float64, len(dA[i]))
+	// }
+
+	if activ == activation.ACReLU {
+		dZ = activation.ReLUBAckward(dA, cache)
+	} else if activ == activation.ACSigmoid {
+		dZ = activation.SigmoidBackward(dA, cache)
+	}
+
+	dAPrev, dW, db = LinearBackward(dZ, cache)
+
+	return dAPrev, dW, db
 }

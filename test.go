@@ -130,3 +130,30 @@ func test6() {
 	fmt.Println(db)
 
 }
+
+func test7() {
+	dAL := [][]float64{{-0.41675785, -0.05626683}}
+	cache := model.ForwardPropCache{
+		Z: [][]float64{{0.04153939, -1.11792545}},
+		APrev: [][]float64{
+			{-2.1361961, 1.64027081},
+			{-1.79343559, -0.84174737},
+			{0.50288142, -1.24528809},
+		},
+		W: [][]float64{{-1.05795222, -0.90900761, 0.55145404}},
+		B: []float64{2.29220801},
+	}
+
+	fmt.Println("sigmoid")
+	dAPrev, dW, db := ml.LinearActivationBackward(dAL, cache, activation.ACSigmoid)
+	fmt.Println("dAPrev", dAPrev)
+	fmt.Println("dW", dW)
+	fmt.Println("db", db)
+
+	fmt.Println("relu")
+	dAPrev, dW, db = ml.LinearActivationBackward(dAL, cache, activation.ACReLU)
+	fmt.Println("dAPrev", dAPrev)
+	fmt.Println("dW", dW)
+	fmt.Println("db", db)
+
+}

@@ -2,15 +2,9 @@ package ml
 
 import (
 	"godl/activation"
+	"godl/model"
 	"math"
 )
-
-type ForwardPropCache struct {
-	APrev [][]float64
-	W     [][]float64
-	B     []float64
-	Z     [][]float64
-}
 
 // Linear Forward propagation for single layer
 // APrev[m][n]
@@ -35,7 +29,7 @@ func LinearActivationForward(
 	APrev, W [][]float64,
 	b []float64,
 	activ activation.ActivationFunction,
-) (A [][]float64, cache ForwardPropCache) {
+) (A [][]float64, cache model.ForwardPropCache) {
 	Z := LinearForward(APrev, W, b)
 
 	switch activ {
@@ -45,7 +39,7 @@ func LinearActivationForward(
 		A = activation.ReLU(Z)
 	}
 
-	cache = ForwardPropCache{
+	cache = model.ForwardPropCache{
 		APrev: APrev,
 		W:     W,
 		B:     b,
@@ -61,13 +55,13 @@ func LModelForward(
 	X [][]float64,
 	weights map[int][][]float64,
 	biases map[int][]float64,
-) (AL [][]float64, caches []ForwardPropCache) {
+) (AL [][]float64, caches []model.ForwardPropCache) {
 	A := X
 	L := len(weights)
 
 	for l := 1; l < L; l++ {
 		APrev := A
-		cache := ForwardPropCache{}
+		cache := model.ForwardPropCache{}
 
 		A, cache = LinearActivationForward(APrev, weights[l], biases[l], activation.ACReLU)
 		caches = append(caches, cache)

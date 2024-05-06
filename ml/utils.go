@@ -20,15 +20,16 @@ func Dot(A, B [][]float64) [][]float64 {
 	return P
 }
 
-func Transpose(Mat [][]float64) [][]float64 {
-	n, m := len(Mat), len(Mat[0])
+func Transpose(A [][]float64) [][]float64 {
+	n, m := len(A), len(A[0])
 	t := make([][]float64, m)
 	for i := range t {
 		t[i] = make([]float64, n)
 	}
-	for i := 0; i < n; i++ {
-		for j := 0; j < m; j++ {
-			t[j][i] = Mat[i][j]
+
+	for i := range A {
+		for j := range A[i] {
+			t[j][i] = A[i][j]
 		}
 	}
 	return t

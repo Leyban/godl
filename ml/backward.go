@@ -1,5 +1,7 @@
 package ml
 
+import "godl/model"
+
 /*
 LinearBackward implements the linear portion of backward propagation for a single layer (layer l).
 
@@ -12,7 +14,7 @@ LinearBackward implements the linear portion of backward propagation for a singl
 		dW:     (n, n-1)
 		db:     (n,)
 */
-func LinearBackward(dZ [][]float64, cache ForwardPropCache) (dAprev, dW [][]float64, db []float64) {
+func LinearBackward(dZ [][]float64, cache model.ForwardPropCache) (dAprev, dW [][]float64, db []float64) {
 	Aprev, W := cache.APrev, cache.W
 	m := len(Aprev[0])
 

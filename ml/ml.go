@@ -68,3 +68,27 @@ func InitializeParametersDeep(layerDims []int64) (weights map[int][][]float64, b
 
 	return weights, biases
 }
+
+func UpdateParameters(
+	weights map[int][][]float64,
+	biases map[int][]float64,
+
+	dW map[int][][]float64,
+	db map[int][]float64,
+
+	learning_rate float64,
+) (
+	map[int][][]float64,
+	map[int][]float64,
+) {
+	for l := range weights {
+		for n := range weights[l] {
+			for m := range weights[l][n] {
+				weights[l][n][m] = weights[l][n][m] - (learning_rate * dW[l][n][m])
+			}
+			biases[l][n] = biases[l][n] - (learning_rate * db[l][n])
+		}
+	}
+
+	return weights, biases
+}

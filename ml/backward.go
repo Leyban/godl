@@ -49,11 +49,6 @@ func LinearBackward(dZ [][]float64, cache model.ForwardPropCache) (dAprev, dW []
 func LinearActivationBackward(dA [][]float64, cache model.ForwardPropCache, activ activation.ActivationFunction) (dAPrev, dW [][]float64, db []float64) {
 	var dZ [][]float64
 
-	// dZ := make([][]float64, len(dA))
-	// for i := range dA {
-	// 	dZ[i] = make([]float64, len(dA[i]))
-	// }
-
 	if activ == activation.ACReLU {
 		dZ = activation.ReLUBAckward(dA, cache)
 	} else if activ == activation.ACSigmoid {
@@ -63,4 +58,33 @@ func LinearActivationBackward(dA [][]float64, cache model.ForwardPropCache, acti
 	dAPrev, dW, db = LinearBackward(dZ, cache)
 
 	return dAPrev, dW, db
+}
+
+func LModelBackward(AL [][]float64, Y [][]float64, caches []model.ForwardPropCache) (dA map[int][][]float64, dW map[int][][]float64, db map[int][]float64) {
+	L := len(caches)
+
+	dAL := make([][]float64, len(AL))
+	for n := range AL {
+		dAL[n] = make([]float64, len(AL[n]))
+
+		for m := range AL[n] {
+			dAL[n][m] = -((Y[n][m] / AL[n][m]) - ((1 - Y[n][m]) / (1 - AL[n][m])))
+		}
+	}
+
+	dA = make(map[int][][]float64)
+	dW = make(map[int][][]float64)
+	db = make(map[int][]float64)
+
+	dA[L] = dAL
+
+	cache := caches[L-1]
+	dA[L-1], dW[L], db[L] = LinearActivationBackward(dAL, cache, activation.ACSigmoid)
+
+	for l := L - 1; l > 0; l-- {
+		cache := caches[l-1]
+		dA[l-1], dW[l], db[l] = LinearActivationBackward(dA[l], cache, activation.ACReLU)
+	}
+
+	return dA, dW, db
 }

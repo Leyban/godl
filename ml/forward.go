@@ -75,12 +75,24 @@ func LModelForward(
 
 // Compute loss from AL and Y.
 // Only works on single array AL and single array Y
-func ComputeCost(AL, Y [][]float64) float64 {
+func ComputeCost2d(AL, Y [][]float64) float64 {
 	m := len(Y[0])
 
 	var cost float64
 	for i := 0; i < m; i++ {
 		cost += -Y[0][i]*math.Log(AL[0][i]) - (1-Y[0][i])*math.Log(1-AL[0][i])
+	}
+	cost /= float64(m)
+
+	return cost
+}
+
+func ComputeCost1d(AL, Y []float64) float64 {
+	m := len(Y)
+
+	var cost float64
+	for i := 0; i < m; i++ {
+		cost += -Y[i]*math.Log(AL[i]) - (1-Y[i])*math.Log(1-AL[i])
 	}
 	cost /= float64(m)
 

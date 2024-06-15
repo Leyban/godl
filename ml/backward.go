@@ -64,9 +64,9 @@ func LModelBackward(AL [][]float64, Y [][]float64, caches []model.ForwardPropCac
 	L := len(caches)
 
 	dAL := make([][]float64, len(AL))
+
 	for n := range AL {
 		dAL[n] = make([]float64, len(AL[n]))
-
 		for m := range AL[n] {
 			dAL[n][m] = -((Y[n][m] / AL[n][m]) - ((1 - Y[n][m]) / (1 - AL[n][m])))
 		}

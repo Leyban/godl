@@ -58,7 +58,7 @@ func InitializeParametersDeep(layerDims []int64) (weights map[int][][]float64, b
 			weights[l][i] = make([]float64, layerDims[l-1])
 
 			for j := range weights[l][i] {
-				weights[l][i][j] = rand.Float64() * 0.01
+				weights[l][i][j] = (rand.Float64()*2 - 1) * 0.1
 			}
 
 		}

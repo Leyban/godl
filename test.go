@@ -96,7 +96,7 @@ func test5() {
 	Y := [][]float64{{1, 1, 0}}
 	AL := [][]float64{{.8, .9, 0.4}}
 
-	cost := ml.ComputeCost(AL, Y)
+	cost := ml.ComputeCost2d(AL, Y)
 	fmt.Println(cost)
 
 }

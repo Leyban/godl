@@ -7,8 +7,8 @@
 ### Test Run
 
 *Time Spent* 
-`16m31.079017127s`
-![image](https://github.com/Leyban/godl/assets/96819910/721fc4ed-1ace-464c-8fb4-e07f5c0ac031)
+- `16m31.079017127s`
+- ![image](https://github.com/Leyban/godl/assets/96819910/721fc4ed-1ace-464c-8fb4-e07f5c0ac031)
 
 *Results*
 70% accuracy

@@ -31,20 +31,17 @@ func LoadTrainData() ([][]float64, []float64) {
 		log.Fatal(err)
 	}
 
-	// // Forge the inputs into image buildable map
-	// reshapedDataX := make([][12288]uint8, numItems)
-	// for i := 0; i < numItems; i++ {
-	// 	for j := 0; j < 64*64*3; j++ {
-	// 		reshapedDataX[i][j] = dataX[i*64*64*3+j]
-	// 	}
-	// }
-
-	// Forge the inputs A0
+	// Init X
 	X := make([][]float64, 64*64*3)
 	for i := 0; i < 64*64*3; i++ {
 		X[i] = make([]float64, numItems)
+	}
+
+	for i := 0; i < 64*64; i++ {
 		for j := 0; j < numItems; j++ {
-			X[i][j] = float64(dataX[i+j*numItems])
+			X[i][j] = float64(dataX[i+j*64*64*3])
+			X[i+64*64][j] = float64(dataX[i+1+j*64*64*3])
+			X[i+64*64*2][j] = float64(dataX[i+2+j*64*64*3])
 		}
 	}
 
@@ -96,20 +93,17 @@ func LoadTestData() ([][]float64, []float64) {
 		log.Fatal(err)
 	}
 
-	// // Forge the inputs into image buildable map
-	// reshapedDataX := make([][12288]uint8, numItems)
-	// for i := 0; i < numItems; i++ {
-	// 	for j := 0; j < 64*64*3; j++ {
-	// 		reshapedDataX[i][j] = dataX[i*64*64*3+j]
-	// 	}
-	// }
-
-	// Forge the inputs A0
+	// Init X
 	X := make([][]float64, 64*64*3)
 	for i := 0; i < 64*64*3; i++ {
 		X[i] = make([]float64, numItems)
+	}
+
+	for i := 0; i < 64*64; i++ {
 		for j := 0; j < numItems; j++ {
-			X[i][j] = float64(dataX[i+j*numItems])
+			X[i][j] = float64(dataX[i+j*64*64*3])
+			X[i+64*64][j] = float64(dataX[i+1+j*64*64*3])
+			X[i+64*64*2][j] = float64(dataX[i+2+j*64*64*3])
 		}
 	}
 

@@ -66,5 +66,14 @@ func Predict(X [][]float64, Y []float64, W map[int][][]float64, b map[int][]floa
 		}
 	}
 
+	correct := 0
+	for i := range preds {
+		if preds[i] == int(Y[i]) {
+			correct++
+		}
+	}
+
+	print("Accuracy: ", float64(correct)/float64(len(Y)))
+
 	return preds
 }

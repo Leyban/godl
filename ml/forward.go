@@ -80,7 +80,7 @@ func ComputeCost2d(AL, Y [][]float64) float64 {
 
 	var cost float64
 	for i := 0; i < m; i++ {
-		cost += -Y[0][i]*math.Log(AL[0][i]) - (1-Y[0][i])*math.Log(1-AL[0][i])
+		cost += math.Abs(-Y[0][i]*math.Log(AL[0][i]) - (1-Y[0][i])*math.Log(1-AL[0][i]))
 	}
 	cost /= float64(m)
 

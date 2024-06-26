@@ -13,3 +13,6 @@
 *Results*
 - 70% accuracy
 - ![image](https://github.com/Leyban/godl/assets/96819910/46bd9eab-6c50-43b2-9cbe-7183c92154ee)
+
+### Note
+I made no effort on making the results repeatable as I am using pure randomized inital weights and biases hence results *__will__* vary

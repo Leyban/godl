@@ -11,5 +11,5 @@
 - ![image](https://github.com/Leyban/godl/assets/96819910/721fc4ed-1ace-464c-8fb4-e07f5c0ac031)
 
 *Results*
-70% accuracy
-![image](https://github.com/Leyban/godl/assets/96819910/46bd9eab-6c50-43b2-9cbe-7183c92154ee)
+- 70% accuracy
+- ![image](https://github.com/Leyban/godl/assets/96819910/46bd9eab-6c50-43b2-9cbe-7183c92154ee)
